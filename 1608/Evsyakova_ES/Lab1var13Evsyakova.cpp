@@ -45,15 +45,11 @@ int main(int argc, char* argv[])
 	{
 		rows = atoi(argv[1]); // принимаем параметры и конвертируем их в Int
 		columns = atoi(argv[2]);
-	}
-
-	
-
-
+	}	
 	int proc_num, proc_rank; // количество процессов, номер процесса
 	int *send_counts, *displs, *recieve_buffer; // количество элементов для отправки, смещение, буффер приема
 	int chunk_size, rem; // размер куска, остаток
-
+	   	 
 	double start, end;
 
 	MPI_Init(&argc, &argv);
@@ -77,17 +73,7 @@ int main(int argc, char* argv[])
 	}
 
 	recieve_buffer = new int[send_counts[proc_rank]];
-	// разбиваем матрицу и отправляем ее остальным процессам
-	MPI_Scatterv(matrix, send_counts, displs, MPI_INT, recieve_buffer, send_counts[proc_rank], MPI_INT, 0, MPI_COMM_WORLD);
-	/* (const void *sendbuf, const int *sendcounts, const int *displs,
-	MPI_Datatype sendtype, void *recvbuf, int recvcount,
-	MPI_Datatype recvtype, int root, MPI_Comm comm) */
 
-	max = MaxSearch(recieve_buffer, send_counts[proc_rank]); // вычисляем максимум
-	int GlobMax = 0;
-
-	MPI_Reduce(&max, &GlobMax, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD); // собираем максимальные значения со всех процессов
-	
 	if (proc_rank == 0)
 	{
 		matrix = new int[rows * columns];
@@ -97,11 +83,28 @@ int main(int argc, char* argv[])
 
 		if ((rows < 10) && (columns < 10)) // если матрица меньше чем 10 на 10 то выводит ее на экран
 			OutputMatr(matrix, rows, columns);
+		printf("Matrix %d%d \n", rows, columns,matrix);
+		printf("--------------------------------\n");
 	}
+
+	
+	// разбиваем матрицу и отправляем ее остальным процессам
+	MPI_Scatterv(matrix, send_counts, displs, MPI_INT, recieve_buffer, send_counts[proc_rank], MPI_INT, 0, MPI_COMM_WORLD);
+	/* (const void *sendbuf, const int *sendcounts, const int *displs,
+	MPI_Datatype sendtype, void *recvbuf, int recvcount,
+	MPI_Datatype recvtype, int root, MPI_Comm comm) */
+
+	max = MaxSearch(recieve_buffer, send_counts[proc_rank]); // вычисляем максимум
+	int GlobMax = 0;
+	
+	MPI_Reduce(&max, &GlobMax, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD); // собираем максимальные значения со всех процессов
+	
+
+
 	if (proc_rank == 0)
 	{
 		end = MPI_Wtime();
-
+		
 		cout << "max = " << GlobMax << endl;
 		cout << "Parallel time : " << end - start << endl;
 
