@@ -24,6 +24,7 @@ void OutputMatr(const int* matrix, const int n, const int m) // выведение матриц
 	{
 		for (int j = 0; j < m; j++)
 			cout << matrix[i * m + j];
+		
 		cout << endl;
 	}
 }
@@ -81,10 +82,24 @@ int main(int argc, char* argv[])
 		for (int i = 0; i < rows * columns; i++) // заполнение матрицы
 			matrix[i] = rand() % 100;        // значениями от 0 до 100
 
-		if ((rows < 10) && (columns < 10)) // если матрица меньше чем 10 на 10 то выводит ее на экран
-			OutputMatr(matrix, rows, columns);
-		printf("Matrix %d%d \n", rows, columns,matrix);
+		//if ((rows < 10) && (columns < 10)) // если матрица меньше чем 10 на 10 то выводит ее на экран
+		//	OutputMatr(matrix, rows, columns);
+
+		printf("Matrix %d*%d \n", rows, columns);
 		printf("--------------------------------\n");
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j = 0; j < columns; j++)
+			{
+				printf("%d ", matrix[i*columns + j]);
+				
+			}
+			
+			printf("\n");
+
+		}
+
+		
 	}
 
 	
@@ -103,7 +118,8 @@ int main(int argc, char* argv[])
 
 	if (proc_rank == 0)
 	{
-		end = MPI_Wtime();
+		end = MPI_Wtime();			
+
 		
 		cout << "max = " << GlobMax << endl;
 		cout << "Parallel time : " << end - start << endl;
