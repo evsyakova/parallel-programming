@@ -1,6 +1,4 @@
-// mpilab.cpp: определяет точку входа для консольного приложения.
-// By Nakhimovich Dm. 0836-1
-//
+
 
 #include "stdafx.h"
 #include "mpi.h"
@@ -83,8 +81,8 @@ int main(int argc, char* argv[])
 {
 	// console 
 	setlocale(LC_CTYPE, "rus");
-	SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
-	SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
+	SetConsoleCP(1251);// ГіГ±ГІГ Г­Г®ГўГЄГ  ГЄГ®Г¤Г®ГўГ®Г© Г±ГІГ°Г Г­ГЁГ¶Г» win-cp 1251 Гў ГЇГ®ГІГ®ГЄ ГўГўГ®Г¤Г 
+	SetConsoleOutputCP(1251); // ГіГ±ГІГ Г­Г®ГўГЄГ  ГЄГ®Г¤Г®ГўГ®Г© Г±ГІГ°Г Г­ГЁГ¶Г» win-cp 1251 Гў ГЇГ®ГІГ®ГЄ ГўГ»ГўГ®Г¤Г 
 	srand((unsigned)time(NULL));
 	// Char arrays
 	char *text = 0, *sub = 0;
